@@ -1,0 +1,103 @@
+* {
+    box-sizing: border-box; /* Ensures padding/margin don’t affect width */
+}
+
+.list-product {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px; /* Prevents excessive stretching on large screens */
+    height: 740px;
+    padding: 10px 50px;
+    margin: 30px auto;
+    border-radius: 6px;
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for better UI */
+}
+
+.listproduct-format-main {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    padding: 20px 0;
+    color: #454545;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 2px solid #ddd; /* Adds a subtle divider */
+}
+
+.listproduct-format {
+    align-items: center;
+    font-weight: 500;
+}
+
+.listproduct-product-icon {
+    height: 80px;
+    object-fit: contain;
+}
+
+.listproduct-remove-icon {
+    cursor: pointer;
+    margin: auto;
+    transition: transform 0.2s ease-in-out;
+}
+
+.listproduct-remove-icon:hover {
+    transform: scale(1.1);
+}
+
+.listproduct-allproducts {
+    overflow-y: auto;
+    max-height: 500px; /* Controls overflow in case of many products */
+    width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 800px) {
+    .list-product {
+        width: 95%;
+        height: auto;
+        padding: 10px 30px;
+        margin: 20px auto;
+    }
+
+    .listproduct-format-main {
+        grid-template-columns: 1fr 2fr 1fr 1fr;
+        font-size: 12px;
+        padding: 10px 0;
+    }
+
+    .listproduct-product-icon {
+        height: 60px;
+    }
+}
+@media (max-width: 500px) {
+    .list-product {
+        width: 100%;
+        padding: 10px 15px;
+        margin: 15px auto;
+    }
+
+    .listproduct-format-main {
+        grid-template-columns: 1fr 1.5fr 1fr;
+        font-size: 10px;
+        padding: 8px 0;
+        gap: 5px;
+    }
+
+    .listproduct-product-icon {
+        height: 50px;
+    }
+
+    .listproduct-remove-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .listproduct-allproducts {
+        max-height: 400px; /* Reduce height for better scrolling */
+    }
+}
+

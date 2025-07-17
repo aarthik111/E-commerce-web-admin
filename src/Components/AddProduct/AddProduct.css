@@ -1,0 +1,140 @@
+.add-product {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 800px;
+    padding: 30px 50px;
+    margin: 20px auto; /* Centered properly */
+    border-radius: 6px;
+    background: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for better UI */
+}
+
+.addproduct-itemfeild {
+    width: 100%;
+    color: #7b7b7b;
+    font-size: 16px;
+    margin-bottom: 15px; /* Space between fields */
+}
+
+.addproduct-itemfeild input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 50px;
+    border-radius: 4px;
+    padding-left: 15px;
+    border: 1px solid #c3c3c3;
+    outline: none;
+    color: #7b7b7b;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    transition: border 0.3s ease-in-out;
+}
+
+.addproduct-itemfeild input:focus {
+    border: 1px solid #6079ff;
+}
+
+.addproduct-price {
+    display: flex;
+    gap: 40px;
+}
+
+/* Ensure product selector fits well */
+.add-product-selector {
+    padding: 10px;
+    width: 100%;
+    height: 50px;
+    font-size: 14px;
+    color: #7b7b7b;
+    border: 1px solid #7b7b7b8d;
+    border-radius: 4px;
+}
+
+/* Thumbnail Styling */
+.addproduct-thumnail-img {
+    height: 120px;
+    width: 120px;
+    max-width: 100%;
+    border-radius: 10px;
+    object-fit: contain;
+    margin: 10px 0;
+}
+
+/* Button Styling */
+.addproduct-btn {
+    margin-top: 20px;
+    width: 160px;
+    height: 50px;
+    border-radius: 6px;
+    background: #6079ff;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+}
+
+.addproduct-btn:hover {
+    background: #4b66ff;
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 800px) {
+    .add-product {
+        width: 90%;
+        padding: 20px;
+        margin: 20px auto;
+    }
+
+    .addproduct-price {
+        flex-direction: column; /* Stack price inputs on small screens */
+        gap: 15px;
+    }
+
+    .addproduct-thumnail-img {
+        height: 100px;
+        width: 100px;
+    }
+}
+@media (max-width: 500px) {
+    .add-product {
+        width: 95%;
+        padding: 15px;
+        margin: 15px auto;
+    }
+
+    .addproduct-itemfeild {
+        font-size: 14px; /* Reduce font size for smaller screens */
+    }
+
+    .addproduct-itemfeild input {
+        height: 45px;
+        font-size: 13px;
+        padding-left: 10px;
+    }
+
+    .addproduct-price {
+        flex-direction: column; /* Stack price fields */
+        gap: 10px;
+    }
+
+    .add-product-selector {
+        height: 45px;
+        font-size: 13px;
+    }
+
+    .addproduct-thumnail-img {
+        height: 80px;
+        width: 80px;
+        border-radius: 8px;
+    }
+
+    .addproduct-btn {
+        width: 140px;
+        height: 45px;
+        font-size: 14px;
+    }
+}
+
