@@ -7,7 +7,6 @@ const ListProduct = () => {
 
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-  // Stable fetch function to satisfy eslint
   const fetchInfo = useCallback(async () => {
     try {
       const res = await fetch(`${BASE_URL}/allproducts`);
@@ -20,7 +19,7 @@ const ListProduct = () => {
 
   useEffect(() => {
     fetchInfo();
-  }, [fetchInfo]); // ✅ included as dependency
+  }, [fetchInfo]);
 
   const remove_product = async (id) => {
     try {
@@ -42,7 +41,7 @@ const ListProduct = () => {
     <div className='list-product'>
       <h1>All Products List</h1>
       <div className="listproduct-format-main">
-        <p>Products</p>
+        <p>Product</p>
         <p>Title</p>
         <p>Old Price</p>
         <p>New Price</p>
@@ -54,7 +53,7 @@ const ListProduct = () => {
         {allproducts.map((product, index) => (
           <React.Fragment key={index}>
             <div className="listproduct-format-main listproduct-format">
-              <img src={product.image} className='listproduct-product-icon' alt="" />
+              <img src={product.image} className='listproduct-product-icon' alt="product" />
               <p>{product.name}</p>
               <p>${product.old_price}</p>
               <p>${product.new_price}</p>
