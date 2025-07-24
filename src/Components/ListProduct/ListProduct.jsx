@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import './ListProduct.css';
-import cross_icon from '../../assets/cross_icon.png';
+import cross_icon from '../../assets/cross_icon.png'; // Make sure this file exists
+import { useNavigate } from 'react-router-dom';
 
 const ListProduct = () => {
   const [allproducts, setAllProducts] = useState([]);
-
+  const navigate = useNavigate();
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const fetchInfo = useCallback(async () => {
@@ -37,6 +38,10 @@ const ListProduct = () => {
     }
   };
 
+  const edit_product = (product) => {
+    navigate('/addproduct', { state: { product } });
+  };
+
   return (
     <div className='list-product'>
       <h1>All Products List</h1>
@@ -47,6 +52,7 @@ const ListProduct = () => {
         <p>New Price</p>
         <p>Category</p>
         <p>Remove</p>
+        <p>Edit</p>
       </div>
       <div className="listproduct-allproducts">
         <hr />
@@ -59,6 +65,9 @@ const ListProduct = () => {
               <p>${product.new_price}</p>
               <p>{product.category}</p>
               <img onClick={() => remove_product(product.id)} className="listproduct-remove-icon" src={cross_icon} alt="Remove" />
+              <span onClick={() => edit_product(product)} className="listproduct-edit-icon" style={{ cursor: 'pointer', fontSize: '20px' }}>
+                ✏️
+              </span>
             </div>
             <hr />
           </React.Fragment>

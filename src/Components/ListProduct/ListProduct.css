@@ -53,6 +53,14 @@
     max-height: 500px; /* Controls overflow in case of many products */
     width: 100%;
 }
+.listproduct-edit-icon {
+  transition: transform 0.2s ease;
+}
+
+.listproduct-edit-icon:hover {
+  transform: scale(1.2);
+}
+
 
 /* Responsive Design */
 @media (max-width: 800px) {

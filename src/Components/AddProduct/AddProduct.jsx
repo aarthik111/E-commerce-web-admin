@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './AddProduct.css';
 import upload_area from '../../assets/upload_area.svg';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const editingProduct = location.state?.product || null;
+
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [productDetails, setProductDetails] = useState({
@@ -13,6 +18,18 @@ const AddProduct = () => {
   });
 
   const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+  useEffect(() => {
+    if (editingProduct) {
+      setProductDetails({
+        name: editingProduct.name,
+        category: editingProduct.category,
+        new_price: editingProduct.new_price,
+        old_price: editingProduct.old_price
+      });
+      setPreview(editingProduct.image);
+    }
+  }, [editingProduct]);
 
   const imageHandler = (e) => {
     const file = e.target.files[0];
@@ -26,61 +43,82 @@ const AddProduct = () => {
     setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
   };
 
-  const Add_Product = async () => {
-    if (!productDetails.name || !image || !productDetails.new_price || !productDetails.old_price) {
-      alert("❌ Please fill all fields and select an image");
+  const submitHandler = async () => {
+    if (!productDetails.name || !productDetails.new_price || !productDetails.old_price) {
+      alert("❌ Please fill all fields.");
       return;
     }
 
     try {
-      // Upload image to backend -> cloudinary
-      const formData = new FormData();
-      formData.append('product', image);
+      let imageUrl = editingProduct?.image || null;
 
-      const uploadRes = await fetch(`${BASE_URL}/upload`, {
-        method: 'POST',
-        body: formData
-      });
+      // If image is newly selected, upload it
+      if (image) {
+        const formData = new FormData();
+        formData.append('product', image);
 
-      const uploadData = await uploadRes.json();
+        const uploadRes = await fetch(`${BASE_URL}/upload`, {
+          method: 'POST',
+          body: formData
+        });
 
-      if (!uploadData.success) {
-        alert("❌ Image upload failed");
-        return;
+        const uploadData = await uploadRes.json();
+
+        if (!uploadData.success) {
+          alert("❌ Image upload failed");
+          return;
+        }
+
+        imageUrl = uploadData.image_url;
       }
 
       const product = {
         ...productDetails,
-        image: uploadData.image_url
+        image: imageUrl
       };
 
-      const addRes = await fetch(`${BASE_URL}/addproduct`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json'
-        },
-        body: JSON.stringify(product)
-      });
-
-      const addData = await addRes.json();
-
-      if (addData.success) {
-        alert("✅ Product added successfully");
-        setProductDetails({
-          name: '',
-          category: 'women',
-          new_price: '',
-          old_price: ''
+      if (editingProduct) {
+        // Update mode
+        const updateRes = await fetch(`${BASE_URL}/updateproduct`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ id: editingProduct.id, updatedProduct: product })
         });
-        setImage(null);
-        setPreview(null);
+
+        const updateData = await updateRes.json();
+
+        if (updateData.success) {
+          alert("✅ Product updated successfully!");
+          navigate('/listproduct');
+        } else {
+          alert("❌ Failed to update product.");
+        }
       } else {
-        alert("❌ Failed to add product to database");
+        // Add mode
+        const addRes = await fetch(`${BASE_URL}/addproduct`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(product)
+        });
+
+        const addData = await addRes.json();
+
+        if (addData.success) {
+          alert("✅ Product added successfully");
+          setProductDetails({ name: '', category: 'women', new_price: '', old_price: '' });
+          setImage(null);
+          setPreview(null);
+        } else {
+          alert("❌ Failed to add product.");
+        }
       }
     } catch (error) {
-      console.error("Error while adding product:", error);
-      alert("❌ Server error. Try again.");
+      console.error("Error:", error);
+      alert("❌ Server error.");
     }
   };
 
@@ -113,16 +151,14 @@ const AddProduct = () => {
 
       <div className="addproduct-itemfeild">
         <label htmlFor="file-input">
-          <img
-            src={preview || upload_area}
-            className='addproduct-thumnail-img'
-            alt="product preview"
-          />
+          <img src={preview || upload_area} className='addproduct-thumnail-img' alt="product preview" />
         </label>
         <input onChange={imageHandler} type="file" name='image' id='file-input' hidden />
       </div>
 
-      <button onClick={Add_Product} className='addproduct-btn'>ADD</button>
+      <button onClick={submitHandler} className='addproduct-btn'>
+        {editingProduct ? 'Update' : 'Add'}
+      </button>
     </div>
   );
 };

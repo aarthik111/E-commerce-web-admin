@@ -10,6 +10,7 @@ const Admin = () => {
         <Sidebar/>
         <Routes>
             <Route path='/addproduct' element={<AddProduct/>} />
+            <Route path='/addproduct/:productId' element={<AddProduct />} />
             <Route path='/listproduct' element={<ListProduct/>} />
         </Routes>
     </div>
@@ -17,3 +18,4 @@ const Admin = () => {
 }
 
 export default Admin
+
